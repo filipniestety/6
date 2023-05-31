@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 class WrongStudentName extends Exception { }
 class WrongAge extends Exception { }
+class WrongMenu extends Exception { }
 
 class Main {
     public static Scanner scan = new Scanner(System.in);
@@ -24,17 +25,30 @@ class Main {
               
             } catch (WrongAge e) {
                 System.out.println("Błędny wiek!");
+              
+            } catch(WrongMenu e) {
+                System.out.println("Nie ma takiej możliwości!");
             }
         }
     }
   
-    public static int menu() {
+    public static int menu() throws WrongMenu {
+      int result;
         System.out.println("Wciśnij:");
         System.out.println("1 - aby dodać studenta");
         System.out.println("2 - aby wypisać wszystkich studentów");
         System.out.println("3 - aby wyszukać studenta po imieniu");
         System.out.println("0 - aby wyjść z programu");
-        return scan.nextInt();
+      try {
+      result = scan.nextInt();
+    } catch (Exception e) {
+      scan.nextLine();
+      throw new WrongMenu();
+    }
+    if (result < 0 || result > 3) {
+      throw new WrongMenu();
+    }
+    return result;
     }
 
     public static String ReadName() throws WrongStudentName {
